@@ -17,7 +17,7 @@ def talker():
     rospy.loginfo("Starting imu sensor setup...")
 
     # get parameter
-    imu_port = rospy.get_param('~port', '/dev/ttyUSB2') #"""dmesg grep usb : CP210X"""
+    imu_port = rospy.get_param('~port', '/dev/ttyUSB1') #"""dmesg grep usb : CP210X"""
     baud = rospy.get_param('~baud', 115200)
 
 
@@ -87,9 +87,9 @@ def talker():
     rospy.loginfo("imu setup: 10hz output rate")
     ser.readline()
 
-    # ser.write('<lpf20>') # set low pass filter (cutoff f=10hz)
-    # rospy.loginfo("imu setup: LPF (f=10hz) ON")
-    # ser.readline()
+    ser.write(b'<lpf5>') # set low pass filter (cutoff f=10hz)
+    rospy.loginfo("imu setup: LPF (f=10hz) ON")
+    ser.readline()
 
     imu_pub = rospy.Publisher("imu_data", Imu, queue_size=5)
     base_link_2_base_footprint_tf = tf.TransformBroadcaster()
